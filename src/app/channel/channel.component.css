@@ -1,0 +1,77 @@
+#myUL {
+    /* Remove default list styling */
+    list-style-type: none;
+    padding: 0;
+    margin: 6%;
+}
+
+#myUL li a {
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+}
+
+#myUL li a:hover:not(.header) {
+    background-color: #eee;
+    /* Add a hover effect to all links, except for headers */
+}
+
+.avtarimg {
+    width: 32px;
+    height: 32px;
+}
+
+.arowimg {
+    width: 32px;
+    height: 32px;
+    float: right;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+}
+
+.avtarimgdiv {
+    float: left;
+    width: 5%;
+    padding: 5px;
+}
+
+.arrowimgdiv {
+    float: left;
+    width: 47%;
+    padding: 5px;
+}
+
+.cltext {}
+
+
+/* Clearfix (clear floats) */
+
+.row {
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
