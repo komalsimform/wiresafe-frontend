@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
 import { ApiService} from '../../shared/services/apiservice.service';
 import { Channel } from '../model/channel';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelService {
+  public ischeckpage = new BehaviorSubject<boolean>(false);
+  
+  constructor(private apiService:ApiService,private http:HttpClient) { }
 
-  constructor(private apiService:ApiService) { }
-
+  
 
   //Get channel list
-  channelList() : Observable<Channel> {
-      return this.apiService.get('/channel/');
+  channelList() : Observable<any> {
+      // return this.apiService.get('/channel/');
+      return this.http.get("./assets/JSON/channel.json");
   }
 
   //Get channel info
   channelDetail(channelid): Observable<Channel> {
     return this.apiService.get('/channel/'+ channelid);
+  }
+
+  //check page for headers
+  checkpage(ischeck) {
+    this.ischeckpage.next(true);
+    return ischeck;
   }
 }

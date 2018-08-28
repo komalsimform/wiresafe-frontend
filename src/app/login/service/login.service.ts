@@ -17,5 +17,15 @@ export class LoginService {
     return this.apiService.get('/user/'+ userid);
   }
 
+  //set token into local storage
+  sendToken(token: string) {
+   return localStorage.setItem("token", token)
+  }
+
+  //get token from local storage
+  loggedIn() {
+    return !!localStorage.getItem('token'); //it will return either true or false value
+  }
+  
 
 }

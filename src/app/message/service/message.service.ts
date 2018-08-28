@@ -17,12 +17,12 @@ export class MessageService {
   }
 
   //Get messages from a room
-  getRoomMessages(msg:Message) : Observable<Message> {
+  getAllMessages(msg:Message) : Observable<Message> {
     return this.apiService.get('/channel/'+ msg.channelId + '/messages/');
   }
 
   // Get latest incoming messages
-  getAllMessages(message:Message): Observable<Message> {
+  syncMessages(message:Message): Observable<Message> {
     return this.apiService.get('/sync');
   }
 }

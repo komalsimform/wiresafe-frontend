@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   }
 
   getUserDetail(id) {
+    // this.loginService.sendToken('12345');
+    localStorage.setItem('token','123456789');
     this.router.navigateByUrl('/channel');
     // this.login.id = id;
     // this.loginService.getUserDetail(this.login.id)

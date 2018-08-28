@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router} from '@angular/router';
+import { ChannelService } from './service/channel.service';
 
 @Component({
   selector: 'app-channel',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChannelComponent implements OnInit {
 
-  constructor() { }
+  ismessage:boolean = false;
+  constructor(private router:Router,private channelService:ChannelService) { }
 
   ngOnInit() {
   }
+
+  gotoMessage() {
+    this.channelService.checkpage(true);
+    this.router.navigateByUrl('/message');
+  }
+
+ 
 
 }

@@ -1,0 +1,23 @@
+.backarrowimg {
+    width: 25px;
+    height: 25px;
+}
+
+.attachment {
+    float: right;
+}
+
+.attachmentimg {
+    width: 25px;
+    height: 25px;
+}
+
+.container-fluid {
+    position: fixed;
+    width: 100%;
+    background: #4e5d6c;
+}
+
+.navbar-header {
+    width: 100%;
+}
