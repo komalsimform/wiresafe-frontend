@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -10,8 +10,12 @@ import { ChannelComponent } from './channel/channel.component';
 import { MessageComponent } from './message/message.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { RecieveMessageComponent } from './message/recieve-message/recieve-message.component';
 import { ChannelDetailComponent } from './channel/channel-detail/channel-detail.component';
+import { SendMessageComponent } from './message/send-message/send-message.component';
+import { AttachmentListComponent } from './message/attachment-list/attachment-list.component';
+import { IncomingMessagesComponent } from './message/incoming-messages/incoming-messages.component';
+import { OutgoingMessagesComponent } from './message/outgoing-messages/outgoing-messages.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,14 +25,19 @@ import { ChannelDetailComponent } from './channel/channel-detail/channel-detail.
     MessageComponent,
     HeaderComponent,
     FooterComponent,
-    RecieveMessageComponent,
-    ChannelDetailComponent
+    ChannelDetailComponent,
+    SendMessageComponent,
+    AttachmentListComponent,
+    IncomingMessagesComponent,
+    OutgoingMessagesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

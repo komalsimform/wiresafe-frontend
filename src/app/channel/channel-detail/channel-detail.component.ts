@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChannelService } from '../service/channel.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-channel-detail',
@@ -8,7 +9,7 @@ import { ChannelService } from '../service/channel.service';
 })
 export class ChannelDetailComponent implements OnInit {
   channelList:any = [];
-  constructor(private channelService:ChannelService) { }
+  constructor(private channelService:ChannelService,private router:Router) { }
 
   ngOnInit() {
     this.getChannelList();
@@ -21,5 +22,10 @@ export class ChannelDetailComponent implements OnInit {
         this.channelList = result;
       }); 
   }
+  gotoMessage() {
+    this.channelService.checkpage(true);
+    this.router.navigateByUrl('/message');
+  }
+
 
 }

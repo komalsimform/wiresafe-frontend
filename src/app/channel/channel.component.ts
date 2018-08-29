@@ -15,11 +15,7 @@ export class ChannelComponent implements OnInit {
   ngOnInit() {
   }
 
-  gotoMessage() {
-    this.channelService.checkpage(true);
-    this.router.navigateByUrl('/message');
-  }
-
+  
  
 
 }

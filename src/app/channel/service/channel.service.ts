@@ -3,6 +3,7 @@ import { ApiService} from '../../shared/services/apiservice.service';
 import { Channel } from '../model/channel';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -19,6 +20,10 @@ export class ChannelService {
   channelList() : Observable<any> {
       // return this.apiService.get('/channel/');
       return this.http.get("./assets/JSON/channel.json");
+      // .pipe(map(response => {
+      //   console.log('service res',response);
+      //   return response;
+      // }));
   }
 
   //Get channel info

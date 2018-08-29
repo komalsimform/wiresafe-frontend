@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Login } from '../model/login';
 import { ApiService} from '../../shared/services/apiservice.service';
+import {Http, Headers} from '@angular/http';
 
 
 @Injectable({
@@ -9,7 +10,7 @@ import { ApiService} from '../../shared/services/apiservice.service';
 })
 export class LoginService {
 
-  constructor(private apiService:ApiService) { }
+  constructor(private apiService:ApiService,private http:Http) { }
 
   
   //Get user data

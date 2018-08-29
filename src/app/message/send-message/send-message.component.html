@@ -1,3 +1,7 @@
-<p>
-  send-message works!
-</p>
+<div class="type_msg">
+    <div class="input_msg_write">
+        <!-- <input type="text" class="write_msg" [ngModel]="sharedVar" (ngModelChange)="change($event)" placeholder="Type a message" /> -->
+        <input type="text" class="write_msg" value="{{ sampleData }}" [(ngModel)]='sampleData'>
+        <button class="msg_send_btn" (click)="sendMessage()" type="button">Send</button>
+    </div>
+</div>

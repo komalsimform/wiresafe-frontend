@@ -2,23 +2,31 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Message } from '../model/message';
 import { ApiService} from '../../shared/services/apiservice.service';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
-  constructor(private apiService:ApiService) { }
+  constructor(private apiService:ApiService,private http:HttpClient) { }
 
 
   //Send a new message in a room
   sendMessage(message:Message): Observable<Message> {
-    return this.apiService.post('/channel/'+ message.channelId + '/messages/',message);
+    return this.apiService.post('/channel/'+ message.channelId + '/messages/',message.content);
   }
 
   //Get messages from a room
-  getAllMessages(msg:Message) : Observable<Message> {
-    return this.apiService.get('/channel/'+ msg.channelId + '/messages/');
+  getAllMessages(channelid) : Observable<any> {
+    // return this.apiService.get('/channel/'+ msg.channelId + '/messages/');
+    return this.http.get("./assets/JSON/message.json")
+    .pipe(map(response => {
+      console.log('service res',response);
+      return response;
+    }));
   }
 
   // Get latest incoming messages

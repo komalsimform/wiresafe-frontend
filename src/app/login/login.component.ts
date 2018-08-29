@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from './service/login.service';
 import { Login } from './model/login';
 import { Router } from '@angular/router';
+import { ChannelService } from '../channel/service/channel.service';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,14 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   login = new Login();
-  constructor(private loginService:LoginService,private router:Router) { }
+  constructor(private loginService:LoginService,private router:Router,private channelservice:ChannelService) { }
 
   ngOnInit() {
+    // this.channelservice.channelList()
+    //   .subscribe(data => {
+    //     console.log(data);
+    //   });
+    localStorage.setItem('loginuserid','/user/4075736572313a6e656f2e77697265736166652e636f6d');
   }
 
   getUserDetail(id) {
@@ -24,6 +30,7 @@ export class LoginComponent implements OnInit {
     // this.loginService.getUserDetail(this.login.id)
     //   .subscribe(result => {
     //     console.log('success user',result);
+      
     //   });
   }
 
