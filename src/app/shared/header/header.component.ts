@@ -16,18 +16,20 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.authgaurd.isloggedIn.subscribe(result => {
       this.checkloggedIn = result;
-      console.log('token res',this.checkloggedIn);
     });
 
     this.channelService.ischeckpage.subscribe(result => {
       this.messageheader = result;
-      console.log('messge header',result);
     });
   }
 
   backtoChannel() {
     this.messageheader = false;
     this.router.navigateByUrl('/channel');
+  }
+
+  attachment() {
+
   }
 
 }

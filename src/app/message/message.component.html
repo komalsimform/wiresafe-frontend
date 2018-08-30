@@ -1,29 +1,19 @@
 <div class="container">
     <div class="mesgs">
+
         <div class="msg_history">
-            <div *ngFor="let msg of messageList">
-                <div class="incoming_msg" *ngIf="loginuserid != msg.sender">
-                    <app-incoming-messages [incomingmsg]="msg"></app-incoming-messages>
-                    <!-- <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <p>{{msg.content}}
-                                <span class="incoming_time_date"> {{msg.timestamp | date:'dd-MMM-yyyy HH:mm a'}}</span>
-                            </p>
-                        </div>
-                    </div> -->
-                </div>
-                <div class="outgoing_msg" *ngIf="loginuserid == msg.sender">
-                    <app-outgoing-messages [outgoingmsg]="msg"></app-outgoing-messages>
-                    <!-- <div class="outgoing_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                    <div class="sent_msg">
-                        <p>{{msg.content}}
-                            <span class="time_date"> {{msg.timestamp | date:'dd-MMM-yyyy HH:mm a'}}</span>
-                        </p>
-                    </div> -->
+            <div *ngFor="let msg of messageList | groupBy:'timestamp'">
+                <p><span class="test">{{ msg.key | customDateFormat:msg.key }}</span></p>
+                <div *ngFor="let msgval of msg.value">
+                    <div class="incoming_msg" *ngIf="loginuserid != msgval.sender">
+                        <app-incoming-messages [incomingmsg]="msgval"></app-incoming-messages>
+                    </div>
+                    <div class="outgoing_msg" *ngIf="loginuserid == msgval.sender">
+                        <app-outgoing-messages [outgoingmsg]="msgval"></app-outgoing-messages>
+                    </div>
                 </div>
             </div>
         </div>
-        <app-send-message [(sharedVar)]="sharedVarParent"></app-send-message>
+        <app-send-message (valueChange)='sendMessage($event)'></app-send-message>
     </div>
 </div>

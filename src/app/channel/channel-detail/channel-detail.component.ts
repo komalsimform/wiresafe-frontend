@@ -18,7 +18,6 @@ export class ChannelDetailComponent implements OnInit {
   getChannelList() {
     this.channelService.channelList()
       .subscribe(result => {
-        console.log('success channellist',result);
         this.channelList = result;
       }); 
   }

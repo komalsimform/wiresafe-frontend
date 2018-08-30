@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Message } from '../model/message';
 import { ApiService} from '../../shared/services/apiservice.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class MessageService {
+  public messages = new BehaviorSubject<any>('');
 
   constructor(private apiService:ApiService,private http:HttpClient) { }
 
@@ -24,7 +25,6 @@ export class MessageService {
     // return this.apiService.get('/channel/'+ msg.channelId + '/messages/');
     return this.http.get("./assets/JSON/message.json")
     .pipe(map(response => {
-      console.log('service res',response);
       return response;
     }));
   }
@@ -32,5 +32,9 @@ export class MessageService {
   // Get latest incoming messages
   syncMessages(message:Message): Observable<Message> {
     return this.apiService.get('/sync');
+  }
+
+  msgdata(data) {
+    this.messages.next(data);
   }
 }

@@ -1,31 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from './service/message.service';
+import { Message } from './model/message';
+import { DatePipe } from '@angular/common';
+import { GroupByPipe } from './message.pipe';
+import { customDateFormatPipe } from './messagedate.pipe';
+
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  styleUrls: ['./message.component.css'],
+  providers: [DatePipe]
 })
 export class MessageComponent implements OnInit {
   messageList:any = [];
   loginuserid:string;
-  sharedVarParent = 'hii';
-  constructor(private messageService:MessageService) { }
+  newMessage;
+  constructor(private messageService:MessageService,private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.loginuserid = localStorage.getItem('loginuserid');
-    console.log('login',this.loginuserid);
     this.getMessages();
-    console.log('parent comp',this.sharedVarParent);
   }
 
   getMessages() {
     let channelid = '21424f6f6466584c6e4a625457684679714e763a6e656f2e77697265736166652e636f6d';
-    this.messageService.getAllMessages(channelid) 
+    this.messageService.messages
       .subscribe(result => {
-        console.log('suucess msg',result);
-        this.messageList = result;
-      });
+        if(result === '' || result === null){
+          this.messageService.getAllMessages(channelid) 
+              .subscribe(data => {
+                this.messageList = data;
+                // this.messageList.forEach(result => {
+                //   var datetime = new Date(result.timestamp).toString();
+                //   var dt = this.datePipe.transform(datetime,"MMM dd yyyy");
+                //   result.timestamp = dt;
+                // });
+              });
+        }
+        else {
+              this.messageList = result;
+        }
+      }); 
   }
 
+
+  sendMessage(msg) {
+    this.newMessage = msg;
+    let newjson = {
+        "@id": "/channel/21424f6f6466584c6e4a625457684679714e763a6e656f2e77697265736166652e636f6d/messages/24313533343230363433323539727a745a793a6e656f2e77697265736166652e636f6d",
+        "@type": "Text",
+        "channelId": "/channel/21424f6f6466584c6e4a625457684679714e763a6e656f2e77697265736166652e636f6d",
+        "timestamp": 1535624913000,
+        "sender": "/user/4075736572313a6e656f2e77697265736166652e636f6d",
+        "content": this.newMessage
+    };
+    //  this.messageService.sendMessage(newjson);
+      // .subscribe(result => {
+      //   console.log('success send msg',result);
+      // });
+
+    let channelid = '21424f6f6466584c6e4a625457684679714e763a6e656f2e77697265736166652e636f6d';
+    this.messageService.getAllMessages(channelid)
+      .subscribe(result => {
+        result.push(newjson);
+        this.newMessage = '';
+        this.messageService.msgdata(result);
+      });
+  }
 }

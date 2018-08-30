@@ -8,29 +8,18 @@ import { Message } from '../model/message';
   styleUrls: ['./send-message.component.css']
 })
 export class SendMessageComponent implements OnInit {
-  @Input() sharedVar: string;
-  @Output() sharedVarChange = new EventEmitter();
+  newMessage:any;
+  @Output() valueChange = new EventEmitter();
+ 
  
   constructor(private messageService:MessageService) { }
 
   ngOnInit() {
   }
 
-  change(newValue) {
-    // console.log('newvalue', newValue)
-    // this.sharedVar = newValue;
-    this.sharedVarChange.emit(newValue);
-  }
-
   sendMessage() {
-    console.log('send msg',this.sharedVar);
-    let message = new Message();
-    message.content = this.sharedVar;
-    // message.channelId
-    this.messageService.sendMessage(message)
-      .subscribe(result => {
-        console.log('success send msg',result);
-      });
+    this.valueChange.emit(this.newMessage);
+    this.newMessage = '';
   }
 
 }
