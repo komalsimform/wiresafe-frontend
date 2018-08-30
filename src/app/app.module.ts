@@ -16,8 +16,9 @@ import { AttachmentListComponent } from './message/attachment-list/attachment-li
 import { IncomingMessagesComponent } from './message/incoming-messages/incoming-messages.component';
 import { OutgoingMessagesComponent } from './message/outgoing-messages/outgoing-messages.component';
 import { FormsModule } from '@angular/forms';
-import { GroupByPipe } from './message/message.pipe';
-import { customDateFormatPipe } from './message/messagedate.pipe';
+import { GroupByPipe } from './shared/pipe/groupBy.pipe';
+import { customDateFormatPipe } from './shared/pipe/customDateFormat.pipe';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { customDateFormatPipe } from './message/messagedate.pipe';
     HttpModule,
     FormsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

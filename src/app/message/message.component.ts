@@ -1,22 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from './service/message.service';
 import { Message } from './model/message';
-import { DatePipe } from '@angular/common';
-import { GroupByPipe } from './message.pipe';
-import { customDateFormatPipe } from './messagedate.pipe';
+
 
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css'],
-  providers: [DatePipe]
+  styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
   messageList:any = [];
   loginuserid:string;
   newMessage;
-  constructor(private messageService:MessageService,private datePipe: DatePipe) { }
+  constructor(private messageService:MessageService) { }
 
   ngOnInit() {
     this.loginuserid = localStorage.getItem('loginuserid');
@@ -31,11 +28,6 @@ export class MessageComponent implements OnInit {
           this.messageService.getAllMessages(channelid) 
               .subscribe(data => {
                 this.messageList = data;
-                // this.messageList.forEach(result => {
-                //   var datetime = new Date(result.timestamp).toString();
-                //   var dt = this.datePipe.transform(datetime,"MMM dd yyyy");
-                //   result.timestamp = dt;
-                // });
               });
         }
         else {
