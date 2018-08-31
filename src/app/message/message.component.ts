@@ -43,7 +43,7 @@ export class MessageComponent implements OnInit {
         "@id": "/channel/21424f6f6466584c6e4a625457684679714e763a6e656f2e77697265736166652e636f6d/messages/24313533343230363433323539727a745a793a6e656f2e77697265736166652e636f6d",
         "@type": "Text",
         "channelId": "/channel/21424f6f6466584c6e4a625457684679714e763a6e656f2e77697265736166652e636f6d",
-        "timestamp": 1535624913000,
+        "timestamp": Date.now(),
         "sender": "/user/4075736572313a6e656f2e77697265736166652e636f6d",
         "content": this.newMessage
     };

@@ -122,6 +122,7 @@ img {
 .outgoing_msg_img {
     display: inline-block;
     width: 6%;
+    margin-left: 12px;
 }
 
 .received_withd_msg p {
@@ -182,17 +183,18 @@ img {
 }
 
 .msg_send_btn {
-    background: #05728f none repeat scroll 0 0;
+    /* background: #05728f none repeat scroll 0 0; */
+    background: #ffffff none repeat scroll 0 0;
     border: medium none;
     border-radius: 50%;
     color: #fff;
     cursor: pointer;
     font-size: 17px;
-    height: 50px;
+    height: 55px;
     position: absolute;
-    right: 0;
+    right: 31px;
     top: 1px;
-    width: 50px;
+    width: 55px;
 }
 
 .messaging {

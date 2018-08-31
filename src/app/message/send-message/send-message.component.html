@@ -1,8 +1,18 @@
 <div class="type_msg">
     <div class="input_msg_write">
-        <input type="text" class="write_msg" [(ngModel)]="newMessage" placeholder="Type a message" />
-        <!-- <input type="text" class="write_msg" [(ngModel)]='newMessage'> -->
-        <button class="msg_send_btn" (click)="sendMessage()" type="button">Send</button>
-        <!-- <button class='btn btn-primary' (click)="valueChanged()">Click me</button> -->
+        <form (ngSubmit)="sendMessage()">
+            <input type="text" class="write_msg" [(ngModel)]="newMessage" name="message" placeholder="Type a message" />
+            <!-- <input type="text" class="write_msg" [(ngModel)]='newMessage'> -->
+
+            <div class="image-upload">
+                <label for="file-input">
+                        <img src="assets/images/attachment.png"/>
+                    </label>
+                <input id="file-input" type="file" />
+            </div>
+            <a href="javascript:void(0)" (click)="sendMessage()"><img src="assets/images/send-message.png" class="sendmsgimg msg_send_btn"></a>
+            <!-- <button class="msg_send_btn" type="submit">Send</button> -->
+            <!-- <button class='btn btn-primary' (click)="valueChanged()">Click me</button> -->
+        </form>
     </div>
 </div>

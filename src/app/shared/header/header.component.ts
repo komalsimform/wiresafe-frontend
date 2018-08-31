@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthGuard } from '../../auth.guard';
 import { ChannelService } from '../../channel/service/channel.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +11,10 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   checkloggedIn:boolean;
   messageheader:boolean;
-  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router) { }
+  attachmentheader:boolean;
+  _router:any;
+  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router,private route:ActivatedRoute) { 
+   }
 
   ngOnInit() {
     this.authgaurd.isloggedIn.subscribe(result => {
@@ -21,15 +24,25 @@ export class HeaderComponent implements OnInit {
     this.channelService.ischeckpage.subscribe(result => {
       this.messageheader = result;
     });
+    
   }
 
-  backtoChannel() {
-    this.messageheader = false;
-    this.router.navigateByUrl('/channel');
+  backtoPage() {
+          if(this.router.url === '/attachmentlist') {
+            this.messageheader = true;
+            this.attachmentheader = false;
+            this.router.navigateByUrl('/message');
+          }
+          else {
+            this.messageheader = false;
+            this.attachmentheader = false;
+            this.router.navigateByUrl('/channel');
+          }
   }
 
   attachment() {
-
+    this.attachmentheader = true;
+    this.router.navigateByUrl('/attachmentlist');
   }
 
 }
