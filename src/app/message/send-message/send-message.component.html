@@ -8,7 +8,7 @@
                 <label for="file-input">
                         <img src="assets/images/attachment.png"/>
                     </label>
-                <input id="file-input" type="file" />
+                <input id="file-input" type="file" ng2FileSelect [(ngModel)]="fileupload" [uploader]="uploader" name="fileuploaad" (change)="filechanges()" />
             </div>
             <a href="javascript:void(0)" (click)="sendMessage()"><img src="assets/images/send-message.png" class="sendmsgimg msg_send_btn"></a>
             <!-- <button class="msg_send_btn" type="submit">Send</button> -->

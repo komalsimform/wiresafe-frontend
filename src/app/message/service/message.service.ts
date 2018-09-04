@@ -37,4 +37,9 @@ export class MessageService {
   msgdata(data) {
     this.messages.next(data);
   }
+
+   //Get attachment list
+   attachmentList() : Observable<any> {
+    return this.http.get("./assets/JSON/attachment-list.json");
+  }
 }

@@ -5,9 +5,9 @@
                 <img src="assets/images/arrow.png" class="arowimg">
             </a>
         </li>
-        <li>
-            <a href="javascript:void(0);"><img src="assets/images/paper-clip.png" class="avtarimg"> File 2
-                <img src="assets/images/arrow.png" class="arowimg">
+        <li *ngFor="let attachment of attachmentList">
+            <a href="{{attachment.url}}" download><img src="{{attachment.attachnmentimg}}" class="avtarimg"> {{attachment.name}}
+                <img src="{{attachment.arrowimg}}" class="arowimg">
             </a>
         </li>
     </ul>

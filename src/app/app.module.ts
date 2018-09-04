@@ -19,6 +19,9 @@ import { FormsModule } from '@angular/forms';
 import { GroupByPipe } from './shared/pipe/groupBy.pipe';
 import { customDateFormatPipe } from './shared/pipe/customDateFormat.pipe';
 import { DatePipe } from '@angular/common';
+import { FileSelectDirective  } from 'ng2-file-upload';
+import {ToasterModule} from 'angular2-toaster';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,15 +37,18 @@ import { DatePipe } from '@angular/common';
     IncomingMessagesComponent,
     OutgoingMessagesComponent,
     GroupByPipe,
-    customDateFormatPipe
+    customDateFormatPipe,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FlexLayoutModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    ToasterModule.forRoot()
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
