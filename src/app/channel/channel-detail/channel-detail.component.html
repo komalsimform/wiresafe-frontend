@@ -1,8 +1,8 @@
 <div class="container">
     <ul id="myUL">
         <li *ngFor="let channel of channelList">
-            <a href="javascript:void(0);" (click)="gotoMessage()"><img src="{{channel.avtarimg}}" class="avtarimg"> {{channel.name}}
-                <img src="{{channel.arrowimg}}" class="arowimg">
+            <a href="javascript:void(0);" (click)="gotoMessage(channel)"><img src="assets/images/avtar.png" class="avtarimg"> {{channel.name}}
+                <img src="assets/images/arrow.png" class="arowimg">
             </a>
         </li>
     </ul>

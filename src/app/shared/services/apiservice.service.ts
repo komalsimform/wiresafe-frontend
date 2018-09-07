@@ -14,6 +14,7 @@ export class ApiService {
   private setHeaders() {
     let header = new Headers();
     header.append('x-api-key', `MDAxZWxvY2F0aW9uIG5lby53aXJlc2FmZS5jb20KMDAxM2lkZW50aWZpZXIga2V5CjAwMTBjaWQgZ2VuID0gMQowMDJhY2lkIHVzZXJfaWQgPSBAdXNlcjI6bmVvLndpcmVzYWZlLmNvbQowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IDpfcGlEOEhlejdYUjBHVmEKMDAyZnNpZ25hdHVyZSCDxCqw2WtUOdZyXVw4P3zxKvAD1sGi28CgJU24FT4RDgo`);
+    header.append('Content-Type','application/json');
     return header;
   }
 

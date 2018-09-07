@@ -2,7 +2,7 @@
     /* Remove default list styling */
     list-style-type: none;
     padding: 0;
-    margin: 6%;
+    /* margin: 6%; */
 }
 
 #myUL li a {

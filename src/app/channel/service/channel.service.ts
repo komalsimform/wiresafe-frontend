@@ -18,8 +18,8 @@ export class ChannelService {
 
   //Get channel list
   channelList() : Observable<any> {
-      // return this.apiService.get('/channel/');
-      return this.http.get("./assets/JSON/channel.json");
+      return this.apiService.get('/channel/');
+      // return this.http.get("./assets/JSON/channel.json");
       // .pipe(map(response => {
       //   console.log('service res',response);
       //   return response;

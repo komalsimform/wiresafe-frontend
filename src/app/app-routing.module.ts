@@ -9,7 +9,7 @@ import { AttachmentListComponent } from './message/attachment-list/attachment-li
 const routes: Routes = [
   {path:'login', component:LoginComponent},
   {path:'channel', component:ChannelComponent,canActivate: [AuthGuard]},
-  {path:'message',component:MessageComponent,canActivate: [AuthGuard]},
+  {path:'message/:channel/:id',component:MessageComponent},
   {path:'attachmentlist',component:AttachmentListComponent,canActivate: [AuthGuard]}
 ];
 

@@ -17,3 +17,50 @@
     right: 0;
     top: 1px;
 }
+
+.attachmentdiv {
+    margin-top: -16px;
+}
+
+.closeattachment {
+    top: 0px;
+    position: absolute;
+}
+
+.attachmentspan {
+    margin-right: 10px;
+}
+
+
+/* ------------------------------------ */
+
+.inputfile-box {
+    position: relative;
+}
+
+.inputfile {
+    display: none;
+}
+
+.container {
+    display: inline-block;
+    width: 100%;
+}
+
+.file-box {
+    display: inline-block;
+    width: 100%;
+    border: 1px solid;
+    padding: 5px 0px 5px 5px;
+    box-sizing: border-box;
+    height: calc(2rem - 2px);
+}
+
+.file-button {
+    background: red;
+    padding: 5px;
+    position: absolute;
+    border: 1px solid;
+    top: 0px;
+    right: 0px;
+}

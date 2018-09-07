@@ -2,7 +2,7 @@
     <div class="mesgs">
 
         <div class="msg_history">
-            <div *ngFor="let msg of messageList | groupBy:'timestamp'">
+            <div *ngFor="let msg of messageList">
                 <p><span class="test">{{ msg.key | customDateFormat:msg.key }}</span></p>
                 <div *ngFor="let msgval of msg.value">
                     <div class="incoming_msg" *ngIf="loginuserid != msgval.sender">

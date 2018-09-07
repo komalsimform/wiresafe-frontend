@@ -18,12 +18,15 @@ export class ChannelDetailComponent implements OnInit {
   getChannelList() {
     this.channelService.channelList()
       .subscribe(result => {
-        this.channelList = result;
+        // console.log('channel list',result);
+        this.channelList = JSON.parse(result._body);
+        console.log('chnl list',this.channelList);
       }); 
   }
-  gotoMessage() {
+  gotoMessage(channel) {
+    console.log('go to msg',channel['@id']);
     this.channelService.checkpage(true);
-    this.router.navigateByUrl('/message');
+    this.router.navigateByUrl('/message'+channel['@id']);
   }
 
 

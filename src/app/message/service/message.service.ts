@@ -16,17 +16,17 @@ export class MessageService {
 
 
   //Send a new message in a room
-  sendMessage(message:Message): Observable<Message> {
-    return this.apiService.post('/channel/'+ message.channelId + '/messages/',message.content);
+  sendMessage(message): Observable<Message> {
+    return this.apiService.post(message.channelId + '/messages/',message.content);
   }
 
   //Get messages from a room
-  getAllMessages(channelid) : Observable<any> {
-    // return this.apiService.get('/channel/'+ msg.channelId + '/messages/');
-    return this.http.get("./assets/JSON/message.json")
-    .pipe(map(response => {
-      return response;
-    }));
+  getAllMessages(channel) : Observable<any> {
+    return this.apiService.get(channel + '/messages/');
+    // return this.http.get("./assets/JSON/message.json");
+    // .pipe(map(response => {
+    //   return response;
+    // }));
   }
 
   // Get latest incoming messages
