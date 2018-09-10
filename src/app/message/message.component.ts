@@ -40,6 +40,7 @@ export class MessageComponent implements OnInit {
                   this.messageList.push(res);
                 });
               this.messageList = this.message(this.messageList,'date_');
+              console.log('msg list',this.messageList);
               });
         }
         else {
