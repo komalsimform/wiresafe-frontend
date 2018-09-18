@@ -5,7 +5,6 @@ import { DatePipe } from '@angular/common';
 export class GroupByPipe implements PipeTransform {
   constructor(private datePipe: DatePipe){}
   transform(value: Array<any>, field: string): Array<any> {
-    console.log('pipe.......',field);
     if(!value) {
       return null;
     }
@@ -18,7 +17,6 @@ export class GroupByPipe implements PipeTransform {
       return prev;
     }, {});
     return Object.keys(groupedObj).map(key => {
-      console.log('group key',groupedObj[key]);
         return { key, value: groupedObj[key] }
     });
   }

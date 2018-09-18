@@ -17,7 +17,6 @@ export class AttachmentListComponent implements OnInit {
   getAttachmentList() {
     this.messageService.attachmentList()
       .subscribe(result => {
-        console.log('attachment list',result);
         this.attachmentList = result;
       });
   }

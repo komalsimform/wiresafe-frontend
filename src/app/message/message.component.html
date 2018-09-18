@@ -1,16 +1,18 @@
 <div class="container">
     <div class="mesgs">
-
         <div class="msg_history">
             <div *ngFor="let msg of messageList">
-                <p><span class="test">{{ msg.key | customDateFormat:msg.key }}</span></p>
-                <div *ngFor="let msgval of msg.value">
-                    <div class="incoming_msg" *ngIf="loginuserid != msgval.sender">
-                        <app-incoming-messages [incomingmsg]="msgval"></app-incoming-messages>
-                    </div>
-                    <div>
-                        <div class="outgoing_msg" *ngIf="loginuserid == msgval.sender">
-                            <app-outgoing-messages [outgoingmsg]="msgval"></app-outgoing-messages>
+                <div *ngIf="msg.key != 'undefined'">
+                    <p><span class="test">{{ msg.key | customDateFormat:msg.key }}</span></p>
+                    <div *ngFor="let msgval of msg.value">
+                        <!-- {{loginuserid}} <br /> {{msgval.sender}} -->
+                        <div class="incoming_msg" *ngIf="loginuserid != msgval.sender">
+                            <app-incoming-messages [incomingmsg]="msgval"></app-incoming-messages>
+                        </div>
+                        <div>
+                            <div class="outgoing_msg" *ngIf="loginuserid == msgval.sender">
+                                <app-outgoing-messages [outgoingmsg]="msgval"></app-outgoing-messages>
+                            </div>
                         </div>
                     </div>
                 </div>

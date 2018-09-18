@@ -240,3 +240,8 @@ img {
     font-size: 12px;
     margin: 8px 0 0;
 }
+
+.incoming_msg {
+    overflow: hidden;
+    margin: 26px 0 26px;
+}

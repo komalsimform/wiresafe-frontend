@@ -17,7 +17,7 @@ export class MessageService {
 
   //Send a new message in a room
   sendMessage(message): Observable<Message> {
-    return this.apiService.post(message.channelId + '/messages/',message.content);
+    return this.apiService.post(message.channelId + '/messages/',{"content":message.content});
   }
 
   //Get messages from a room
