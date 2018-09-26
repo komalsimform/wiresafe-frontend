@@ -16,17 +16,15 @@ export class MessageService {
 
 
   //Send a new message in a room
-  sendMessage(message): Observable<Message> {
-    return this.apiService.post(message.channelId + '/messages/',{"content":message.content});
+  sendMessage(message,chnlid): Observable<Message> {
+    console.log('service send msg',chnlid);
+    console.log('service send msg',message);
+    return this.apiService.post('/channel/' + chnlid + '/messages/',message);
   }
 
   //Get messages from a room
-  getAllMessages(channel) : Observable<any> {
-    return this.apiService.get(channel + '/messages/');
-    // return this.http.get("./assets/JSON/message.json");
-    // .pipe(map(response => {
-    //   return response;
-    // }));
+  getAllMessages(channelid) : Observable<any> {
+    return this.apiService.get('/channel/'+ channelid + '/messages/');
   }
 
   // Get latest incoming messages
@@ -34,8 +32,13 @@ export class MessageService {
     return this.apiService.get('/sync');
   }
 
-  msgdata(data) {
+  sendMsgdata(data) {
     this.messages.next(data);
+  }
+
+  sendAttachment(data) {
+    console.log('service attchment....',data);
+    return this.apiService.post('/media/upload',data);
   }
 
    //Get attachment list

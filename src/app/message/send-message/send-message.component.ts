@@ -3,6 +3,7 @@ import { MessageService } from '../service/message.service';
 import { Message } from '../model/message';
 import { FileUploader } from 'ng2-file-upload';
 import {ToasterService} from 'angular2-toaster';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-send-message',
@@ -19,21 +20,33 @@ export class SendMessageComponent implements OnInit {
   });
   public hasBaseDropZoneOver:boolean = false;
   public hasAnotherDropZoneOver:boolean = false;
-  @Output() valueChange = new EventEmitter();
+  @Output() messageChangevalue = new EventEmitter();
  
  
-  constructor(private messageService:MessageService,private toaster:ToasterService) { }
+  constructor(private messageService:MessageService,private toaster:ToasterService,private route: ActivatedRoute) { }
 
   ngOnInit() {
+   
   }
 
-  filechanges(){
+  filechanges(event){
+    
+    const file = event.target.files;
+    console.log('file change',file);
+    // item.binary = event;
+    var r = new FileReader();
+    // r.onload = function(e) { 
+      
+    // }
+    
     this.isupload = true;
     if(this.uploader.queue.length === 0) {
       this.toaster.pop('error', 'This file is not supported');
     }
     else {
       this.uploader.queue.forEach(data => {
+        let res = r.readAsArrayBuffer(data._file);
+    console.log('binary....',res);
         this.fileslist.push(data._file);
       });
     }
@@ -41,7 +54,12 @@ export class SendMessageComponent implements OnInit {
   }
 
   sendMessage() {
-    this.valueChange.emit(this.newMessage);
+    console.log('file list',this.fileslist);
+    let result = {
+      message: this.newMessage,
+      files:this.fileslist
+    }
+    this.messageChangevalue.emit(result);
     this.newMessage = '';
   }
 

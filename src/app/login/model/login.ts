@@ -3,4 +3,6 @@ export class Login {
     name:string;
     email:string;
     telephone:string;
+    username:string;
+    password:string;
 }

@@ -1,7 +1,7 @@
 <div class="type_msg">
     <div class="input_msg_write">
         <form (ngSubmit)="sendMessage()">
-            <input id="filename" type="text" class="write_msg" [(ngModel)]="newMessage" [hidden]="isupload" name="message" placeholder="Type a message" />
+            <input id="filename" type="text" class="write_msg" [(ngModel)]="newMessage" name="message" placeholder="Type a message" />
 
             <!-- <input type="text" class="write_msg" [(ngModel)]='newMessage'> -->
 
@@ -9,7 +9,7 @@
                 <label for="file-input">
                         <img src="assets/images/attachment.png"/>
                     </label>
-                <input id="file-input" type="file" ng2FileSelect [(ngModel)]="fileupload" [uploader]="uploader" name="fileuploaad" (change)="filechanges()" multiple />
+                <input id="file-input" type="file" ng2FileSelect [(ngModel)]="fileupload" [uploader]="uploader" name="fileuploaad" (change)="filechanges($event)" multiple />
 
 
 
