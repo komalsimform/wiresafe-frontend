@@ -2,6 +2,8 @@
 <div class="received_msg">
     <div class="received_withd_msg">
         <p>{{incomingmsg.content}}
+            <br />
+            <a *ngIf="incomingmsg['@type'] == 'Attachment'" (click)="downloadFiles(incomingmsg)" href="javascript:void(0);">{{incomingmsg.filename}}</a>
             <span class="incoming_time_date"> {{incomingmsg.timestamp | date:'HH:mm a'}}</span>
         </p>
     </div>

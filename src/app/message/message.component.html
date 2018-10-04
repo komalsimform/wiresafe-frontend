@@ -1,11 +1,10 @@
 <div class="container">
     <div class="mesgs">
         <div class="msg_history">
-            <div *ngFor="let msg of messageList">
+            <div *ngFor="let msg of messageList | groupBy:'timestamp'">
                 <div *ngIf="msg.key != 'undefined'">
                     <p><span class="test">{{ msg.key | customDateFormat:msg.key }}</span></p>
                     <div *ngFor="let msgval of msg.value">
-                        <!-- {{loginuserid}} <br /> {{msgval.sender}} -->
                         <div class="incoming_msg" *ngIf="loginuserid != msgval.sender">
                             <app-incoming-messages [incomingmsg]="msgval"></app-incoming-messages>
                         </div>

@@ -12,8 +12,7 @@ export class HeaderComponent implements OnInit {
   checkloggedIn:boolean;
   messageheader:boolean;
   attachmentheader:boolean;
-  _router:any;
-  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router,private route:ActivatedRoute) { 
+  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router) { 
    }
 
   ngOnInit() {

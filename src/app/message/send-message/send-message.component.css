@@ -14,7 +14,7 @@
     cursor: pointer;
     font-size: 17px;
     position: absolute;
-    right: 0;
+    right: 32px;
     top: 1px;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .closeattachment {
-    top: 0px;
+    /* top: 0px; */
     position: absolute;
 }
 

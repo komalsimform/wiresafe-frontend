@@ -7,7 +7,6 @@ import { DatePipe } from '@angular/common';
 export class customDateFormatPipe implements PipeTransform {
     constructor(private datePipe: DatePipe){}
     transform(value) {
-    // var dateval = this.datePipe.transform(value,"MMM dd yyyy");
     if(value != undefined) {
             var date = new Date();
             let today = this.datePipe.transform(date,"MMM dd yyyy");

@@ -1,8 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MessageService } from './service/message.service';
-import { Message } from './model/message';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/interval';
 
@@ -15,22 +13,20 @@ import 'rxjs/add/observable/interval';
 export class MessageComponent implements OnInit  {
   messageList:any = [];
   loginuserid:string;
-  newMessage;
   channelid:any;
-  constructor(private messageService:MessageService,private route: ActivatedRoute,private router:Router,private datePipe: DatePipe) {
-   
+  constructor(private messageService:MessageService,private route: ActivatedRoute) {
    }
 
   ngOnInit() {
     this.route.params.subscribe(result => {
       this.channelid = result['id'];
     });
+    
 
     this.loginuserid = localStorage.getItem('loginuserid');
     this.getMessages();
-
-    // Observable.interval(2000)
-    // .subscribe((val) => { this.getMessages() });
+    Observable.interval(2000)
+    .subscribe((val) => { this.syncMessagewithToken() });
   }
 
   getMessages() {
@@ -40,21 +36,32 @@ export class MessageComponent implements OnInit  {
         if(result === '' || result === null){
           this.messageService.getAllMessages(this.channelid) 
               .subscribe(data => {
-                list = JSON.parse(data._body).messages;
-                // console.log('list',list);
-                if(list.length > 0) {
-                  list.forEach(res => {
-                    res.date_ = this.datePipe.transform(res.timestamp,"MMM dd yyyy");
-                    this.messageList.push(res);
-                  });
-                this.messageList = this.message(this.messageList,'date_');
-              }
+                this.messageList = JSON.parse(data._body).messages;
               });
         }
         else {
               this.messageList = result;
         }
       }); 
+  }
+
+  syncMessages() {
+    this.messageService.syncMessages()
+      .subscribe(data => {
+        let result = JSON.parse(data['_body']).messages;
+        this.messageList = result.filter(x => x.channelId === '/channel/'+this.channelid);
+        localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
+      });
+  }
+
+  syncMessagewithToken() {
+    this.syncMessages();
+    let token = localStorage.getItem('syncMessageToken');
+    this.messageService.syncMessageswithToken(token)
+      .subscribe(data => {
+        localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
+        this.messageList.push(JSON.parse(data['_body']).messages[0]);
+      });
   }
 
   message(value,field){
@@ -71,54 +78,48 @@ export class MessageComponent implements OnInit  {
     });
   }
 
-
   sendMessage(msg) {
-    console.log('msg comp',msg);
-    let service = this.messageService;
-    let chnlid = this.channelid;
-    let newmsg = msg.message;
-    let getmsg = this.getMessages();
-    if(msg.files.length > 0) {
-      var reader = new FileReader();
-      var fileByteArray = [];
-      let mediaid;
-      reader.readAsArrayBuffer(msg.files[0]);
-      reader.onloadend = function (evt) {
-          if (evt.target.readyState == FileReader.DONE) {
-             var arrayBuffer = evt.target.result,
-                 array = new Uint8Array(arrayBuffer);
-             for (var i = 0; i < array.length; i++) {
-                 fileByteArray.push(array[i]);
-              }
-          }
-          console.log('array',fileByteArray);
-          service.sendAttachment(fileByteArray)
-          .subscribe(result => {
-            console.log('success attachment',result);
-            mediaid = JSON.parse(result._body);
-             console.log('success attachment...',mediaid.id);
-
-            let newjson = {
-              // channelId: chnlid,
-              content: newmsg,
-              // content: 'hii',
-              mediaId: mediaid.id,
-              filename: 'test.png'
-              // "sender": this.loginuserid,
-            };
-            console.log('ch id..',chnlid);
-             service.sendMessage(newjson,chnlid)
-              .subscribe(result => {
-                console.log('send msg success',result);
-                // getmsg;
-              });
-          });
-     
-      }
-
-      
+    let newmsg = null;
+    let type = 'Text';
+    let filename:any = [];
+    let newjson;
+    let mediaid = [];
     
+    if(msg.files.length > 0) {
+      type = 'Attachment';
+      
+      for (var i = 0; i < msg.files.length; i++) {
+        filename = msg.files[i].name;
+        this.messageService.sendAttachment(msg.files[i])
+        .subscribe(data => {
+          let res = JSON.parse(data['_body']);
+           mediaid.push(res.id);
+        })
+      }
+      if(msg.message !== undefined) {
+        newmsg = msg.message;
+      }
+      newjson = {
+        "content": newmsg,
+        "mediaId": mediaid,
+        "filename": filename,
+        "@type": type
+      };
     }
-   
+    else {
+      if(msg.message !== undefined) {
+        newmsg = msg.message;
+      }
+      newjson = {
+        "content": newmsg,
+        "@type": type
+      };
+    }
+    setTimeout(()=>{
+     this.messageService.sendMessage(newjson,this.channelid)
+      .subscribe(result => {
+        this.syncMessagewithToken();
+      });
+    },3000);
   }
 }

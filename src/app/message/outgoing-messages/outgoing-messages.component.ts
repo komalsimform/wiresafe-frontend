@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MessageService } from '../service/message.service';
+import {saveAs} from 'file-saver'
 
 @Component({
   selector: 'app-outgoing-messages',
@@ -6,11 +8,17 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./outgoing-messages.component.css']
 })
 export class OutgoingMessagesComponent implements OnInit {
-
   @Input() outgoingmsg:any;
-  constructor() { }
+  constructor(private messageService:MessageService) { }
 
   ngOnInit() {
+  }
+ 
+
+  downloadFiles(item) {
+    this.messageService.downloadAttachment(item.mediaId).subscribe(blob => {
+      saveAs(blob, item.filename);
+    });
   }
 
 }
