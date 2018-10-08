@@ -20,6 +20,7 @@ export class MessageComponent implements OnInit  {
   ngOnInit() {
     this.route.params.subscribe(result => {
       this.channelid = result['id'];
+      this.messageService.sendChannelid(this.channelid);
     });
     
 
@@ -31,6 +32,7 @@ export class MessageComponent implements OnInit  {
 
   getMessages() {
     let list:any = [];
+    this.messageList = [];
     this.messageService.messages
       .subscribe(result => {
         if(result === '' || result === null){
@@ -57,25 +59,13 @@ export class MessageComponent implements OnInit  {
   syncMessagewithToken() {
     this.syncMessages();
     let token = localStorage.getItem('syncMessageToken');
-    this.messageService.syncMessageswithToken(token)
-      .subscribe(data => {
-        localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
-        this.messageList.push(JSON.parse(data['_body']).messages[0]);
-      });
-  }
-
-  message(value,field){
-    const groupedObj = value.reduce((prev, cur)=> {
-      if(!prev[cur[field]]) {
-        prev[cur[field]] = [cur];
-      } else {
-        prev[cur[field]].push(cur);
-      }
-      return prev;
-    }, {});
-    return Object.keys(groupedObj).map(key => {
-        return { key, value: groupedObj[key] }
-    });
+    if(token !== null) {
+      this.messageService.syncMessageswithToken(token)
+        .subscribe(data => {
+          localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
+          this.messageList.push(JSON.parse(data['_body']).messages[0]);
+        });
+    }
   }
 
   sendMessage(msg) {
@@ -85,26 +75,25 @@ export class MessageComponent implements OnInit  {
     let newjson;
     let mediaid = [];
     
-    if(msg.files.length > 0) {
+    if(msg.files !== null || msg.files !== '') {
       type = 'Attachment';
-      
-      for (var i = 0; i < msg.files.length; i++) {
-        filename = msg.files[i].name;
-        this.messageService.sendAttachment(msg.files[i])
+        filename = msg.files.name;
+        this.messageService.sendAttachment(msg.files)
         .subscribe(data => {
           let res = JSON.parse(data['_body']);
            mediaid.push(res.id);
-        })
-      }
-      if(msg.message !== undefined) {
-        newmsg = msg.message;
-      }
-      newjson = {
-        "content": newmsg,
-        "mediaId": mediaid,
-        "filename": filename,
-        "@type": type
-      };
+           if(msg.message !== undefined) {
+            newmsg = msg.message;
+          }
+          newjson = {
+            "content": newmsg,
+            "mediaId": mediaid,
+            "filename": filename,
+            "@type": type
+          };
+          console.log('attach json',newjson);
+          this.sendNewMessage(newjson);
+        });
     }
     else {
       if(msg.message !== undefined) {
@@ -114,12 +103,15 @@ export class MessageComponent implements OnInit  {
         "content": newmsg,
         "@type": type
       };
+      console.log('msg json',newjson);
+      this.sendNewMessage(newjson);
     }
-    setTimeout(()=>{
-     this.messageService.sendMessage(newjson,this.channelid)
-      .subscribe(result => {
-        this.syncMessagewithToken();
-      });
-    },3000);
+  }
+
+  sendNewMessage(newjson) {
+    this.messageService.sendMessage(newjson,this.channelid)
+    .subscribe(result => {
+      this.syncMessagewithToken();
+    });
   }
 }

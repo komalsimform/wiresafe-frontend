@@ -64,3 +64,9 @@
     top: 0px;
     right: 0px;
 }
+
+
+/* a.disabled {
+    pointer-events: none;
+    cursor: default;
+} */

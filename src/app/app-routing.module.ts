@@ -10,7 +10,7 @@ const routes: Routes = [
   {path:'login', component:LoginComponent},
   {path:'channel', component:ChannelComponent,canActivate: [AuthGuard]},
   {path:'message/:channel/:id',component:MessageComponent},
-  {path:'attachmentlist',component:AttachmentListComponent,canActivate: [AuthGuard]}
+  {path:'channel/:channelid/attachmentlist',component:AttachmentListComponent,canActivate: [AuthGuard]}
 ];
 
 @NgModule({

@@ -16,6 +16,8 @@ export class MessageService {
     throw new Error("Method not implemented.");
   }
   public messages = new BehaviorSubject<any>('');
+  public channelid = new BehaviorSubject<any>('');
+
 
   constructor(private apiService:ApiService,private http:Http) { }
 
@@ -46,7 +48,7 @@ export class MessageService {
   }
 
   // Send attachment 
-  sendAttachment(data): Observable<File> {
+  sendAttachment(data) {
     return this.apiService.postAttachment('/media/upload',data);
   }
 
@@ -59,5 +61,15 @@ export class MessageService {
   downloadAttachment(mediaid): Observable<Blob> {
     return this.apiService.getAttachment("/media/download/"+ mediaid)
         .map(res => res.blob());
+  }
+
+  // send channel id
+  sendChannelid(id) {
+    return this.channelid.next(id);
+  }
+
+  // get attachment list
+  getAttachmentList(channelid) {
+    return this.apiService.get('/channel/'+ channelid + '/messages/?type=Attachment');
   }
 }

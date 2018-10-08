@@ -15,10 +15,10 @@ export class AttachmentListComponent implements OnInit {
   }
 
   getAttachmentList() {
-    this.messageService.attachmentList()
-      .subscribe(result => {
-        this.attachmentList = result;
-      });
+    // this.messageService.getAttachmentList()
+    //   .subscribe(result => {
+    //     this.attachmentList = result;
+    //   });
   }
 
 

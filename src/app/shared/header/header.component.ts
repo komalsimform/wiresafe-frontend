@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthGuard } from '../../auth.guard';
 import { ChannelService } from '../../channel/service/channel.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService } from '../../message/service/message.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,10 @@ export class HeaderComponent implements OnInit {
   checkloggedIn:boolean;
   messageheader:boolean;
   attachmentheader:boolean;
-  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router) { 
+  channelid:string;
+  channelName:string;
+  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router,private route: ActivatedRoute,private messageService:MessageService) { 
+   
    }
 
   ngOnInit() {
@@ -23,7 +27,14 @@ export class HeaderComponent implements OnInit {
     this.channelService.ischeckpage.subscribe(result => {
       this.messageheader = result;
     });
-    
+
+    this.messageService.channelid
+      .subscribe(result => {
+        this.channelid = result;
+        if(this.channelid !== null || this.channelid !== '') {
+           this.getChannelDetail();
+        }
+      });
   }
 
   backtoPage() {
@@ -41,7 +52,15 @@ export class HeaderComponent implements OnInit {
 
   attachment() {
     this.attachmentheader = true;
-    this.router.navigateByUrl('/attachmentlist');
+    this.router.navigateByUrl('/channel/'+ this.channelid + '/attachmentlist');
+  }
+
+  getChannelDetail() {
+    this.channelService.channelDetail(this.channelid)
+      .subscribe(result => {
+        let data = JSON.parse(result['_body']);
+        this.channelName = data.name;
+      });
   }
 
 }

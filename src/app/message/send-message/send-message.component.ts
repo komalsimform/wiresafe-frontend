@@ -13,33 +13,41 @@ import { ActivatedRoute } from '@angular/router';
 export class SendMessageComponent implements OnInit {
   newMessage:any;
   isupload:boolean = false;
-  fileslist:any=[];
-  finalList:any=[];
+  files:any = '';
   filetype:boolean;
   public uploader:FileUploader = new FileUploader({
     allowedFileType: ["pdf", "xls", "image"]
   });
   public hasBaseDropZoneOver:boolean = false;
   public hasAnotherDropZoneOver:boolean = false;
+  isDisabled:boolean = false;
   @Output() messageChangevalue = new EventEmitter();
  
- 
-  constructor(private messageService:MessageService,private toaster:ToasterService,private route: ActivatedRoute) { }
+  constructor(private messageService:MessageService,private toaster:ToasterService,private route: ActivatedRoute) {
+    console.log('new msg',this.uploader);
+    if(this.newMessage === undefined && this.uploader.queue.length === 0) {
+      this.isDisabled = true;
+    }
+    else {
+      this.isDisabled = false;
+   }
+  }
 
   ngOnInit() {
   }
+
+  
  
   filechanges(event){
+    console.log('change..',this.files);
     this.isupload = true;
     if(this.uploader.queue.length === 0) {
       this.toaster.pop('error', 'This file is not supported');
     }
     else {
+      this.isDisabled = false;
       this.uploader.queue.forEach(data => {
-        console.log(data);
-    
-    this.finalList.push(data._file);
-        this.fileslist.push(data._file);    
+      this.files = data._file;
     });
       
     }
@@ -47,19 +55,39 @@ export class SendMessageComponent implements OnInit {
   }
 
   sendMessage() {
-    let result = {
-      message: this.newMessage,
-      files:this.finalList
+    console.log('send msg',this.files);
+    if(this.files !== '' && (this.newMessage === undefined || this.newMessage === '')) {
+      this.isDisabled = true;
     }
-    this.messageChangevalue.emit(result);
-    this.newMessage = '';
-    this.isupload = false;
-  }
+    else {
+      this.isDisabled = false;
+      let result = {
+        message: this.newMessage,
+        files:this.files
+      }
+      this.messageChangevalue.emit(result);        
+   }
+   this.newMessage = '';
+   this.isupload = false;
+   this.isDisabled = true;
+   this.files = '';
+ }
 
   removeFile(file) {
-    let list_ = this.fileslist;
-    const index: number = list_.indexOf(file);
-    this.fileslist.splice(list_.indexOf(file), 1);
-    this.fileslist = list_;
+    this.files = '';
+    if(this.files !== '' && (this.newMessage === undefined || this.newMessage === '')) {
+      this.isDisabled = true;
+    }
+    else {
+      this.isDisabled = false;
+    }
+  }
+  onSearchChange(val) {
+    if(this.newMessage === undefined) {
+      this.isDisabled = true;
+    }
+    else {
+      this.isDisabled = false;
+   }
   }
 }

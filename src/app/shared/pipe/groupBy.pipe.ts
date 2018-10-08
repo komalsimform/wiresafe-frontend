@@ -12,7 +12,7 @@ export class GroupByPipe implements PipeTransform {
     }
     collection.forEach(result => {
         result.date = this.datePipe.transform( result.timestamp,"MMM dd yyyy");
-        collection.push(result);
+        this.list.push(result);
     });
 
     const groupedCollection = collection.reduce((previous, current)=> {

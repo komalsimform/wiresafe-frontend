@@ -2,7 +2,7 @@
 <div class="sent_msg">
     <p>{{outgoingmsg.content}}
         <br />
-        <a (click)="downloadFiles(outgoingmsg)" href="javascript:void(0);">{{outgoingmsg.filename}}</a>
+        <a (click)="downloadFiles(outgoingmsg)" href="javascript:void(0);" class="filename">{{outgoingmsg.filename}}</a>
         <span class="time_date"> {{outgoingmsg.timestamp | date:'HH:mm a'}}</span>
     </p>
 </div>
