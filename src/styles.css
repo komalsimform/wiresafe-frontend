@@ -202,7 +202,7 @@ img {
 }
 
 .msg_history {
-    /* height: 516px; */
+    /* height: 100px; */
     overflow-y: auto;
 }
 

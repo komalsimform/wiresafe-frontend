@@ -32,6 +32,10 @@ export class MessageService {
     return this.apiService.get('/channel/'+ channelid + '/messages/');
   }
 
+  getAllMessageswithPrevToken(channelid,prevToken) {
+    return this.apiService.get('/channel/'+ channelid + '/messages/?from='+ prevToken);
+  }
+
   // Get latest incoming messages
   syncMessages(): Observable<Message> {
     return this.apiService.get('/sync');

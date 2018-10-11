@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-@Pipe({name: 'groupBy'})
+@Pipe({name: 'groupBy',
+pure: false})
 export class GroupByPipe implements PipeTransform {
     list:any = [];
   constructor(private datePipe: DatePipe){}

@@ -22,26 +22,26 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.authgaurd.isloggedIn.subscribe(result => {
       this.checkloggedIn = result;
+       if(this.checkloggedIn)
+        {
+          this.messageService.channelid
+          .subscribe(result => {
+            this.channelid = result;
+              this.getChannelDetail();
+          });
+        }
     });
 
     this.channelService.ischeckpage.subscribe(result => {
       this.messageheader = result;
     });
-
-    this.messageService.channelid
-      .subscribe(result => {
-        this.channelid = result;
-        if(this.channelid !== null || this.channelid !== '') {
-           this.getChannelDetail();
-        }
-      });
   }
 
   backtoPage() {
-          if(this.router.url === '/attachmentlist') {
+          if(this.router.url === '/channel/'+ this.channelid + '/attachmentlist') {
             this.messageheader = true;
             this.attachmentheader = false;
-            this.router.navigateByUrl('/message');
+            this.router.navigateByUrl('/channel/'+ this.channelid +'/message');
           }
           else {
             this.messageheader = false;
@@ -61,6 +61,14 @@ export class HeaderComponent implements OnInit {
         let data = JSON.parse(result['_body']);
         this.channelName = data.name;
       });
+  }
+
+  logOut() {
+    localStorage.removeItem('APIKey');
+    localStorage.removeItem('loginuserid');
+    localStorage.removeItem('token');
+    localStorage.removeItem('syncMessageToken');
+    this.router.navigateByUrl('/login');
   }
 
 }

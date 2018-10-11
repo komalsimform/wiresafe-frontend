@@ -6,8 +6,8 @@
             </a>
         </li>
         <li *ngFor="let attachment of attachmentList">
-            <a href="{{attachment.url}}" download><img src="{{attachment.attachnmentimg}}" class="avtarimg"> {{attachment.name}}
-                <img src="{{attachment.arrowimg}}" class="arowimg">
+            <a *ngIf="attachment.filename" href="javascript:void(0)" (click)="downloadAttachment(attachment)"><img src="assets/images/paper-clip.png" class="avtarimg"> {{attachment.filename}}
+                <img src="assets/images/arrow.png" class="arowimg">
             </a>
         </li>
     </ul>

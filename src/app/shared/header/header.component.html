@@ -6,7 +6,9 @@
             <a class="navbar-brand" href="javascript:void(0);" (click)="backtoPage()" *ngIf="messageheader"><img src="assets/images/arrow-back.png" class="backarrowimg"></a>
             <a class="navbar-brand" href="javascript:void(0);" *ngIf="messageheader && !attachmentheader">{{channelName}}</a>
             <a class="navbar-brand" href="javascript:void(0);" *ngIf="attachmentheader">Files</a>
-            <a class="navbar-brand attachment" href="javascript:void(0);" *ngIf="messageheader"><img src="assets/images/menu.png" class="attachmentimg"></a>
+            <a class="navbar-brand logoutbtn" href="javascript:void(0);" *ngIf="checkloggedIn" (click)="logOut()">Logout</a>
+
+            <!-- <a class="navbar-brand attachment" href="javascript:void(0);" *ngIf="messageheader"><img src="assets/images/menu.png" class="attachmentimg"></a> -->
             <a class="navbar-brand attachment" href="javascript:void(0);" (click)="attachment()" *ngIf="messageheader && !attachmentheader"><img src="assets/images/attachment.png" class="attachmentimg"></a>
         </div>
     </div>

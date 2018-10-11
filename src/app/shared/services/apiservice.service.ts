@@ -11,6 +11,21 @@ export class ApiService {
 
   constructor(private http:Http) { }
 
+  // private setHeaders() {
+  //   var loginid = localStorage.getItem('loginuserid');
+  //   let header = new Headers();
+  //   let apikey = localStorage.getItem('APIKey');
+  //   let userid = localStorage.getItem('Id');
+  //     header.append('x-api-key', apikey);
+  //   // header.append('Content-Type','application/json');
+
+    
+  //   return header;
+  // }
+
+  //temp
+  
+
   private setHeaders() {
     var loginid = localStorage.getItem('loginuserid');
     let header = new Headers();
@@ -25,6 +40,7 @@ export class ApiService {
     // header.append('Content-Type','application/json');
     return header;
   }
+
 
   get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
     return this.http.get(`${environment.apiUrl}${path}`,{headers:this.setHeaders()});

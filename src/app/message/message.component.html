@@ -1,9 +1,10 @@
 <div class="container">
     <div class="mesgs">
         <div class="msg_history">
-            <div *ngFor="let msg of messageList | groupBy:'timestamp'">
+            {{messageList.length }}
+            <div *ngFor="let msg of messageList | groupBy:'timestamp' ">
                 <div *ngIf="msg.key != 'undefined'">
-                    <p><span class="test">{{ msg.key | customDateFormat:msg.key }}</span></p>
+                    <p><span>{{ msg.key | customDateFormat:msg.key }}</span></p>
                     <div *ngFor="let msgval of msg.value">
                         <div class="incoming_msg" *ngIf="loginuserid != msgval.sender">
                             <app-incoming-messages [incomingmsg]="msgval"></app-incoming-messages>
@@ -16,6 +17,14 @@
                     </div>
                 </div>
             </div>
+
+            <!-- <div *ngFor="let msg of messageList">
+                {{msg.content}}
+                <br /> {{msg.content}} <br />{{msg.content}} <br />{{msg.content}} <br />{{msg.content}}
+
+
+               
+            </div> -->
         </div>
         <app-send-message (messageChangevalue)='sendMessage($event)'></app-send-message>
     </div>

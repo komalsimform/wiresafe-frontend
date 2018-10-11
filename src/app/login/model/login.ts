@@ -5,4 +5,5 @@ export class Login {
     telephone:string;
     username:string;
     password:string;
+    apikey:string;
 }

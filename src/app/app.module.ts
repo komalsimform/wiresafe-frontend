@@ -22,6 +22,8 @@ import { DatePipe } from '@angular/common';
 import { FileSelectDirective  } from 'ng2-file-upload';
 import {ToasterModule} from 'angular2-toaster';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { WINDOW_PROVIDERS } from "./message/service/window.service";
 
 @NgModule({
   declarations: [
@@ -48,9 +50,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FlexLayoutModule,
     HttpModule,
     FormsModule,
-    ToasterModule.forRoot()
+    ToasterModule.forRoot(),
+    InfiniteScrollModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,WINDOW_PROVIDERS],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

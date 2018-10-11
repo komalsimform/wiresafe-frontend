@@ -21,3 +21,7 @@
 .navbar-header {
     width: 100%;
 }
+
+.logoutbtn {
+    float: right;
+}

@@ -24,7 +24,6 @@ export class SendMessageComponent implements OnInit {
   @Output() messageChangevalue = new EventEmitter();
  
   constructor(private messageService:MessageService,private toaster:ToasterService,private route: ActivatedRoute) {
-    console.log('new msg',this.uploader);
     if(this.newMessage === undefined && this.uploader.queue.length === 0) {
       this.isDisabled = true;
     }
@@ -39,7 +38,6 @@ export class SendMessageComponent implements OnInit {
   
  
   filechanges(event){
-    console.log('change..',this.files);
     this.isupload = true;
     if(this.uploader.queue.length === 0) {
       this.toaster.pop('error', 'This file is not supported');
@@ -55,8 +53,7 @@ export class SendMessageComponent implements OnInit {
   }
 
   sendMessage() {
-    console.log('send msg',this.files);
-    if(this.files !== '' && (this.newMessage === undefined || this.newMessage === '')) {
+    if(this.files === '' && (this.newMessage === undefined || this.newMessage === '')) {
       this.isDisabled = true;
     }
     else {
@@ -65,12 +62,14 @@ export class SendMessageComponent implements OnInit {
         message: this.newMessage,
         files:this.files
       }
-      this.messageChangevalue.emit(result);        
+      console.log('send msg',result);
+      this.messageChangevalue.emit(result);    
+      this.newMessage = '';
+      this.isupload = false;
+      this.isDisabled = true;
+      this.files = '';
    }
-   this.newMessage = '';
-   this.isupload = false;
-   this.isDisabled = true;
-   this.files = '';
+  
  }
 
   removeFile(file) {
