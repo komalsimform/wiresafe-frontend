@@ -1,241 +1,143 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy ,DoCheck } from '@angular/core';
+import { Component, OnInit, ViewChild,OnDestroy } from '@angular/core';
 import { MessageService } from './service/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable,Subscription } from 'rxjs';
 import 'rxjs/add/observable/interval';
 import { ToasterService } from 'angular2-toaster';
-import { NgZone } from '@angular/core';
 
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  changeDetection:ChangeDetectionStrategy.OnPush,
   styleUrls: ['./message.component.css']
 })
-export class MessageComponent implements OnInit ,DoCheck  {
+export class MessageComponent implements OnInit,OnDestroy  {
   messageList:any = [];
   loginuserid:string;
-  channelid:any;
+  channelId:any;
   lastScrollTop: number = 0;
   direction: string = "";
-  newList:any = [];
-  // @ViewChild('scrollMe') private myScrollContainer: ElementRef;
-  //scroll
- 
+  isSyncMethod:boolean = true;
+  currentMessageSubscription: Subscription
 
-  constructor(private messageService:MessageService,private route: ActivatedRoute,private router:Router,private toaster:ToasterService,private zone: NgZone,private cdRef: ChangeDetectorRef) {
-
+  constructor(private messageService:MessageService,private route: ActivatedRoute,private toaster:ToasterService) {
     window.onscroll = () => {
-      let st = window.pageYOffset;
-      let dir = '';
-      let list:any = [];
-      if (st > this.lastScrollTop) {
-        console.log('down');
-          // dir = "down";
-          // let nexttoken = localStorage.getItem('nexttoken');
-          // console.log('nexttoken',nexttoken);
-          // if(nexttoken !== null) {
-          //   this.messageService.getAllMessageswithPrevToken(this.channelid,nexttoken)
-          //   .subscribe(result => {
-          //     // localStorage.setItem('nexttoken',JSON.parse(result._body).token.next);
-          //     if(result.status === 200) {
-          //       list.push(JSON.parse(result._body).messages);
-          //       this.messageList = list;
-          //     console.log('success next msg',this.messageList);
-
-          //     }
-          //     else {
-          //       this.toaster.pop('error', result.statusText);
-          //     }
-          //   });
-          // }
+      let scroll = window.pageYOffset;
+      if (scroll > this.lastScrollTop) {
 
       } else {
-        console.log('up',this.lastScrollTop);
-          dir = "up";
-          // if(this.lastScrollTop === 1) {
-            let prev = localStorage.getItem('previoustoken');
-            console.log('prev token',prev);
-            this.messageService.getAllMessageswithPrevToken(this.channelid,prev)
+        this.direction = "up";
+            let prev = localStorage.getItem('previousMessageToken');
+            localStorage.removeItem('previousMessageToken');
+            this.messageService.getAllMessageswithPrevToken(this.channelId,prev)
               .subscribe(result => {
-                console.log('prev token',JSON.parse(result._body).token.previous);
-                localStorage.setItem('previoustoken',JSON.parse(result._body).token.previous);
-                localStorage.setItem('nexttoken',JSON.parse(result._body).token.next);
+                localStorage.setItem('previousMessageToken',JSON.parse(result._body).token.previous);
                 this.messageList = this.messageList.reverse();
-                if(result.status === 200) {
-                  this.zone.run(() => {
                   JSON.parse(result._body).messages.forEach((res,index) => {
                     this.messageList.push(res);
-                    this.cdRef.detectChanges();
-                    // console.log(JSON.parse(result._body).messages.length);
-                  // repItem.push(res);
-                  //   if(JSON.parse(result._body).messages.length == index + 1) {
-                  //     this.messageList = repItem;
-                  //     console.log('item',this.messageList);
-                  //     this.cdRef.detectChanges();
-                  //   }
                   });
-                });
-                console.log('before',this.messageList);
-
                 this.messageList = this.messageList.reverse();
-                console.log('success prev msg',this.messageList);
-                }
-                else {
-                  this.toaster.pop('error', result.statusText);
-                }
+              },err => {
+                this.toaster.pop('error', JSON.parse(err._body).error);
               });
           }
       }
-      // this.lastScrollTop = st;
-      // lc.run(() => {
-      //   this.direction = dir;
-      // });
     };
 
-  //  }
   
   ngOnInit() {
+    this.loginuserid = localStorage.getItem('loginuserid');
+
     this.route.params.subscribe(result => {
-      this.channelid = result['id'];
-      this.messageService.sendChannelid(this.channelid);
+      this.channelId = result['id'];
+      this.messageService.setChannelid(this.channelId);
+    },err => {
+      this.toaster.pop('error', JSON.parse(err._body).error);
     });
     
-
-    this.loginuserid = localStorage.getItem('loginuserid');
-      Observable.interval(2000)
-      .subscribe((val) => { this.syncMessagewithToken() });
-    this.getMessages();
-
+    this.currentMessageSubscription =  Observable.interval(2000)
+      .subscribe((val) => { this.syncMessages() });
+      this.getMessages();
   }
 
-  ngDoCheck() {        
-    this.cdRef.detectChanges(); 
-} 
-
-public trackItem (index: number, item: any) {
-  return item['@id'];
-}
-
-// scrollToBottom(): void {
-//     try {
-//         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-//     } catch(err) { }           
-// }
-
-
-//   onScrollDown () {
-//     console.log('scrolled down!!');
-// }
-
-// onScrollUp () {
-//   console.log('scrolled up!!');
-// }
+  ngOnDestroy() {
+    this.currentMessageSubscription.unsubscribe();
+  }
 
   getMessages() {
-    let list:any = [];
-    // this.messageList = [];
-    this.messageService.messages
-      .subscribe(result => {
-        if(result === '' || result === null){
-          this.messageService.getAllMessages(this.channelid) 
-              .subscribe(data => {
-                console.log('msg success',JSON.parse(data._body));
-                localStorage.setItem('previoustoken',JSON.parse(data._body).token.previous);
-                if(data.status === 200) {
-                  this.messageList = (JSON.parse(data._body).messages);
-                  // this.newList = JSON.parse(data._body).messages;
-                 }
-                 else {
-                   this.toaster.pop('error', data.statusText);
-                 }
-              });
-        }
-        else {
-              // this.messageList = result;
-        }
-      }); 
+       this.messageService.getAllMessages(this.channelId) 
+          .subscribe(data => {
+            localStorage.setItem('previousMessageToken',JSON.parse(data._body).token.previous);
+            this.messageList = (JSON.parse(data._body).messages);
+         },err => {
+          this.toaster.pop('error', JSON.parse(err._body).error);
+        });
   }
 
   syncMessages() {
-    this.messageService.syncMessages()
+    let token = null;
+    token = localStorage.getItem('syncMessageToken');
+    localStorage.removeItem('syncMessageToken');
+    if(this.isSyncMethod) {
+      this.messageService.syncMessages(token)
       .subscribe(data => {
         let result = JSON.parse(data['_body']).messages;
-        this.messageList = result.filter(x => x.channelId === '/channel/'+this.channelid);
-        localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
-      });
-  }
+        this.messageList = result.filter(x => x.channelId === '/channel/'+this.channelId);
 
-  syncMessagewithToken() {
-    // console.log('success msg token',this.messageList);
-    let token = localStorage.getItem('syncMessageToken');
-    console.log('tokn',token);
+        localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
+      },err => {
+        this.toaster.pop('error', JSON.parse(err._body).error);
+      });
+      this.isSyncMethod = false;
+    }
     if(token !== null) {
-      this.messageService.syncMessageswithToken(token)
+      this.messageService.syncMessages(token)
         .subscribe(data => {
-          localStorage.removeItem('syncMessageToken');
-          // console.log('sync data',JSON.parse(data['_body']));
+          localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
           if(JSON.parse(data['_body']).messages.length > 0) {
-            localStorage.setItem('syncMessageToken',JSON.parse(data['_body']).nextToken);
             this.messageList.push(JSON.parse(data['_body']).messages[0]);
           }
+        },err => {
+          this.toaster.pop('error', JSON.parse(err._body).error);
         });
     }
   }
 
-  sendMessage(msg) {
-    let newmsg = null;
+  setMessageDetail(msg) {
     let type = 'Text';
-    let filename:any = [];
-    let newjson;
-    let mediaid = [];
-    if(msg.files !== "") {;
+    let messages;
+    if(msg.file) {
       type = 'Attachment';
-        filename = msg.files.name;
-        this.messageService.sendAttachment(msg.files)
+        this.messageService.sendAttachment(msg.file)
         .subscribe(data => {
-          if(data.status === 200) {
             let res = JSON.parse(data['_body']);
-            mediaid.push(res.id);
-            if(msg.message !== undefined) {
-              newmsg = msg.message;
-            }
-            newjson = {
-              "content": newmsg,
-              "mediaId": mediaid,
-              "filename": filename,
+            messages = {
+              "content": typeof msg.message === "undefined" || !msg.message ? {} : msg.message,
+              "mediaId": res.id,
+              "filename": msg.file.name,
               "@type": type
             };
-            this.sendNewMessage(newjson);
-            }
-            else {
-              this.toaster.pop('error', data.statusText);
-            }
+            console.log('msg',messages);
+
+            this.sendMessage(messages);
+        },err => {
+          this.toaster.pop('error', JSON.parse(err._body).error);
         });
     }
     else {
-      if(msg.message !== undefined) {
-        newmsg = msg.message;
-      }
-      newjson = {
-        "content": newmsg,
+      messages = {
+        "content": typeof msg.message === "undefined" || !msg.message ? {} : msg.message,
         "@type": type
       };
-      this.sendNewMessage(newjson);
+      this.sendMessage(messages);
     }
   }
 
-  sendNewMessage(newjson) {
-    this.messageService.sendMessage(newjson,this.channelid)
+  sendMessage(messages) {
+    this.messageService.sendMessage(messages,this.channelId)
     .subscribe(result => {
-      if(result.status === 200) {
-        this.syncMessages();
-        this.syncMessagewithToken();
-      }
-      else {
-        this.toaster.pop('error', result.statusText);
-      }
+    },err => {
+      this.toaster.pop('error', JSON.parse(err._body).error);
     });
   }
 }

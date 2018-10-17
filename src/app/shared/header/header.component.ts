@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthGuard } from '../../auth.guard';
 import { ChannelService } from '../../channel/service/channel.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MessageService } from '../../message/service/message.service';
 
 @Component({
@@ -10,57 +10,45 @@ import { MessageService } from '../../message/service/message.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  checkloggedIn:boolean;
-  messageheader:boolean;
-  attachmentheader:boolean;
-  channelid:string;
+  checkLoggedIn:boolean;
+  messageHeader:boolean;
+  attachmentHeader:boolean;
+  channelId:string;
   channelName:string;
-  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router,private route: ActivatedRoute,private messageService:MessageService) { 
-   
+  constructor(private authgaurd:AuthGuard,private channelService:ChannelService,private router:Router,private messageService:MessageService) { 
+    this.channelService.setPageHeaders.subscribe(result => {
+      this.messageHeader = result.checkPage;
+      if(result.channel !== undefined)
+        this.channelName = result.channel.name;
+    });
    }
 
   ngOnInit() {
     this.authgaurd.isloggedIn.subscribe(result => {
-      this.checkloggedIn = result;
-       if(this.checkloggedIn)
-        {
-          this.messageService.channelid
-          .subscribe(result => {
-            this.channelid = result;
-              this.getChannelDetail();
-          });
-        }
+      this.checkLoggedIn = result;
     });
-
-    this.channelService.ischeckpage.subscribe(result => {
-      this.messageheader = result;
-    });
+    this.messageService.channelid
+      .subscribe(id => {
+        this.channelId = id;
+      });
   }
 
   backtoPage() {
-          if(this.router.url === '/channel/'+ this.channelid + '/attachmentlist') {
-            this.messageheader = true;
-            this.attachmentheader = false;
-            this.router.navigateByUrl('/channel/'+ this.channelid +'/message');
+          if(this.router.url === '/channel/'+ this.channelId + '/attachmentlist') {
+            this.messageHeader = true;
+            this.attachmentHeader = false;
+            this.router.navigateByUrl('/channel/'+ this.channelId +'/message');
           }
           else {
-            this.messageheader = false;
-            this.attachmentheader = false;
+            this.messageHeader = false;
+            this.attachmentHeader = false;
             this.router.navigateByUrl('/channel');
           }
   }
 
   attachment() {
-    this.attachmentheader = true;
-    this.router.navigateByUrl('/channel/'+ this.channelid + '/attachmentlist');
-  }
-
-  getChannelDetail() {
-    this.channelService.channelDetail(this.channelid)
-      .subscribe(result => {
-        let data = JSON.parse(result['_body']);
-        this.channelName = data.name;
-      });
+    this.attachmentHeader = true;
+    this.router.navigateByUrl('/channel/'+ this.channelId + '/attachmentlist');
   }
 
   logOut() {
@@ -68,6 +56,10 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('loginuserid');
     localStorage.removeItem('token');
     localStorage.removeItem('syncMessageToken');
+    this.checkLoggedIn = false;
+    this.messageHeader = false;
+    this.attachmentHeader = false;
+
     this.router.navigateByUrl('/login');
   }
 

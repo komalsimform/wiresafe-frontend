@@ -37,13 +37,13 @@ export class MessageService {
   }
 
   // Get latest incoming messages
-  syncMessages(): Observable<Message> {
-    return this.apiService.get('/sync');
-  }
-
-  // Get latest incoming messages
-  syncMessageswithToken(token): Observable<Message> {
-    return this.apiService.get('/sync?since='+ token);
+  syncMessages(token): Observable<Message> {
+    if(token !== null) {
+      return this.apiService.get('/sync?since='+ token);
+    }
+    else {
+      return this.apiService.get('/sync');
+    }
   }
 
   // Send message data from one component to another
@@ -56,11 +56,6 @@ export class MessageService {
     return this.apiService.postAttachment('/media/upload',data);
   }
 
-   //Get attachment list
-   attachmentList() : Observable<any> {
-    return this.http.get("./assets/JSON/attachment-list.json");
-  }
-
   //Download attachment
   downloadAttachment(mediaid): Observable<Blob> {
     return this.apiService.getAttachment("/media/download/"+ mediaid)
@@ -68,7 +63,7 @@ export class MessageService {
   }
 
   // send channel id
-  sendChannelid(id) {
+  setChannelid(id) {
     return this.channelid.next(id);
   }
 

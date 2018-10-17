@@ -1,8 +1,7 @@
 <div class="container">
     <form (ngSubmit)="getUserDetail()">
         <label for="id"><b>User</b></label>
-        <!-- <input type="text" placeholder="Enter Userid" [(ngModel)]="login.id" name="id" required> -->
-        <input type="text" placeholder="Enter Userid" [(ngModel)]="login.username" name="id" required>
+        <input type="text" placeholder="Enter Userid" [(ngModel)]="login.id" name="id" required>
 
         <label for="apikey"><b>API Key</b></label>
         <input type="text" placeholder="Enter API Key" [(ngModel)]="login.apikey" name="apikey" required>

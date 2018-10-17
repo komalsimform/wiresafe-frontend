@@ -9,23 +9,20 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AttachmentListComponent implements OnInit {
   attachmentList:any = [];
-  channelid:string = '';
+  channelId:string = '';
   constructor(private messageService:MessageService,private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params.subscribe(result => {
-      this.channelid = result['channelid'];
-      // this.messageService.sendChannelid(this.channelid);
+      this.channelId = result['channelid'];
     });
     this.getAttachmentList();
-
   }
 
   getAttachmentList() {
-    this.messageService.getAttachmentList(this.channelid)
+    this.messageService.getAttachmentList(this.channelId)
       .subscribe(result => {
-        let res = JSON.parse(result._body);
-        this.attachmentList = res.messages;
+        this.attachmentList = JSON.parse(result._body).messages;
       });
   }
 

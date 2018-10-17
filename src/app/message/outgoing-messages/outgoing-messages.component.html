@@ -1,8 +1,8 @@
-<div class="outgoing_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+<div class="outgoing_msg_img"> <img src="assets/images/user-profile.png"> </div>
 <div class="sent_msg">
-    <p>{{outgoingmsg.content}}
+    <p>{{outgoingMessage.content}}
         <br />
-        <a (click)="downloadFiles(outgoingmsg)" href="javascript:void(0);" class="filename">{{outgoingmsg.filename}}</a>
-        <span class="time_date"> {{outgoingmsg.timestamp | date:'HH:mm a'}}</span>
+        <a (click)="downloadFiles(outgoingMessage)" href="javascript:void(0);" class="filename">{{outgoingMessage.filename}}</a>
+        <span class="time_date"> {{outgoingMessage.timestamp | date:'HH:mm a'}}</span>
     </p>
 </div>

@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ChannelService {
-  public ischeckpage = new BehaviorSubject<boolean>(false);
+  public setPageHeaders = new BehaviorSubject<any>('');
   
   constructor(private apiService:ApiService,private http:HttpClient) { }
 
@@ -27,8 +27,7 @@ export class ChannelService {
   }
 
   //check page for headers
-  checkpage(ischeck) {
-    this.ischeckpage.next(true);
-    return ischeck;
+  checkpage(data) {
+   return this.setPageHeaders.next(data);
   }
 }

@@ -1,31 +1,23 @@
 <div class="container">
+    <!-- <div class="mesgs scroll" #scrollMe> -->
     <div class="mesgs">
         <div class="msg_history">
-            {{messageList.length }}
             <div *ngFor="let msg of messageList | groupBy:'timestamp' ">
-                <div *ngIf="msg.key != 'undefined'">
+                <div *ngIf="msg.key != 'undefined' || msg.key != null">
                     <p><span>{{ msg.key | customDateFormat:msg.key }}</span></p>
-                    <div *ngFor="let msgval of msg.value">
-                        <div class="incoming_msg" *ngIf="loginuserid != msgval.sender">
-                            <app-incoming-messages [incomingmsg]="msgval"></app-incoming-messages>
+                    <div *ngFor="let message of msg.value">
+                        <div class="incoming_msg" *ngIf="loginuserid != message.sender">
+                            <app-incoming-messages [incomingMessage]="message"></app-incoming-messages>
                         </div>
                         <div>
-                            <div class="outgoing_msg" *ngIf="loginuserid == msgval.sender">
-                                <app-outgoing-messages [outgoingmsg]="msgval"></app-outgoing-messages>
+                            <div class="outgoing_msg" *ngIf="loginuserid == message.sender">
+                                <app-outgoing-messages [outgoingMessage]="message"></app-outgoing-messages>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- <div *ngFor="let msg of messageList">
-                {{msg.content}}
-                <br /> {{msg.content}} <br />{{msg.content}} <br />{{msg.content}} <br />{{msg.content}}
-
-
-               
-            </div> -->
         </div>
-        <app-send-message (messageChangevalue)='sendMessage($event)'></app-send-message>
+        <app-send-message (messageTextValue)='setMessageDetail($event)'></app-send-message>
     </div>
 </div>

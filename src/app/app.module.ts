@@ -19,11 +19,9 @@ import { FormsModule } from '@angular/forms';
 import { GroupByPipe } from './shared/pipe/groupBy.pipe';
 import { customDateFormatPipe } from './shared/pipe/customDateFormat.pipe';
 import { DatePipe } from '@angular/common';
-import { FileSelectDirective  } from 'ng2-file-upload';
+import { FileUploadModule  } from 'ng2-file-upload';
 import {ToasterModule} from 'angular2-toaster';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { WINDOW_PROVIDERS } from "./message/service/window.service";
 
 @NgModule({
   declarations: [
@@ -39,8 +37,7 @@ import { WINDOW_PROVIDERS } from "./message/service/window.service";
     IncomingMessagesComponent,
     OutgoingMessagesComponent,
     GroupByPipe,
-    customDateFormatPipe,
-    FileSelectDirective
+    customDateFormatPipe
   ],
   imports: [
     BrowserModule,
@@ -51,9 +48,10 @@ import { WINDOW_PROVIDERS } from "./message/service/window.service";
     HttpModule,
     FormsModule,
     ToasterModule.forRoot(),
-    InfiniteScrollModule
+    FileUploadModule
+
   ],
-  providers: [DatePipe,WINDOW_PROVIDERS],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

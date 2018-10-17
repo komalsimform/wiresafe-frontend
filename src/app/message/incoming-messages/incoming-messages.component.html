@@ -1,10 +1,10 @@
-<div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+<div class="incoming_msg_img"> <img src="assets/images/user-profile.png" alt="sunil"> </div>
 <div class="received_msg">
     <div class="received_withd_msg">
-        <p>{{incomingmsg.content}}
+        <p>{{incomingMessage.content}}
             <br />
-            <a *ngIf="incomingmsg['@type'] == 'Attachment'" (click)="downloadFiles(incomingmsg)" href="javascript:void(0);" class="filename">{{incomingmsg.filename}}</a>
-            <span class="incoming_time_date"> {{incomingmsg.timestamp | date:'HH:mm a'}}</span>
+            <a *ngIf="incomingMessage['@type'] == 'Attachment'" (click)="downloadFiles(incomingMessage)" href="javascript:void(0);" class="filename">{{incomingMessage.filename}}</a>
+            <span class="incoming_time_date"> {{incomingMessage.timestamp | date:'HH:mm a'}}</span>
         </p>
     </div>
 </div>

@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { MessageService } from '../service/message.service';
-import { Message } from '../model/message';
 import { FileUploader } from 'ng2-file-upload';
 import {ToasterService} from 'angular2-toaster';
 import { ActivatedRoute } from '@angular/router';
@@ -10,42 +9,36 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.css']
 })
-export class SendMessageComponent implements OnInit {
+export class SendMessageComponent {
   newMessage:any;
-  isupload:boolean = false;
-  files:any = '';
+  isUpload:boolean = false;
+  file:any = '';
   filetype:boolean;
   public uploader:FileUploader = new FileUploader({
     allowedFileType: ["pdf", "xls", "image"]
   });
-  public hasBaseDropZoneOver:boolean = false;
-  public hasAnotherDropZoneOver:boolean = false;
   isDisabled:boolean = false;
-  @Output() messageChangevalue = new EventEmitter();
+  @Output() messageTextValue = new EventEmitter();
  
-  constructor(private messageService:MessageService,private toaster:ToasterService,private route: ActivatedRoute) {
+  constructor(private toaster:ToasterService) {
     if(this.newMessage === undefined && this.uploader.queue.length === 0) {
-      this.isDisabled = true;
+      this.setIsDisabled(true);
     }
     else {
-      this.isDisabled = false;
+      this.setIsDisabled(false);
    }
   }
 
-  ngOnInit() {
-  }
-
-  
  
   filechanges(event){
-    this.isupload = true;
+    this.isUpload = true;
     if(this.uploader.queue.length === 0) {
       this.toaster.pop('error', 'This file is not supported');
     }
     else {
-      this.isDisabled = false;
+      this.setIsDisabled(false);
       this.uploader.queue.forEach(data => {
-      this.files = data._file;
+      this.file = data._file;
     });
       
     }
@@ -53,40 +46,44 @@ export class SendMessageComponent implements OnInit {
   }
 
   sendMessage() {
-    if(this.files === '' && (this.newMessage === undefined || this.newMessage === '')) {
-      this.isDisabled = true;
+    if(this.file === '' && (this.newMessage === undefined || this.newMessage === '')) {
+      this.setIsDisabled(true);
     }
     else {
-      this.isDisabled = false;
+      this.setIsDisabled(false);
       let result = {
         message: this.newMessage,
-        files:this.files
+        file:this.file
       }
-      console.log('send msg',result);
-      this.messageChangevalue.emit(result);    
+      this.messageTextValue.emit(result);
       this.newMessage = '';
-      this.isupload = false;
-      this.isDisabled = true;
-      this.files = '';
+      this.isUpload = false;
+      this.setIsDisabled(true);
+      this.file = '';
    }
   
  }
 
   removeFile(file) {
-    this.files = '';
-    if(this.files !== '' && (this.newMessage === undefined || this.newMessage === '')) {
-      this.isDisabled = true;
+    this.file = '';
+    if(file && (this.newMessage === undefined || this.newMessage === '')) {
+      this.setIsDisabled(true);
     }
     else {
-      this.isDisabled = false;
+      this.setIsDisabled(false);
     }
   }
-  onSearchChange(val) {
-    if(this.newMessage === undefined) {
-      this.isDisabled = true;
+
+  onTextChange(val) {
+      if(this.newMessage === undefined) {
+        this.setIsDisabled(true);
+      }
+      else {
+        this.setIsDisabled(false);
     }
-    else {
-      this.isDisabled = false;
-   }
+  }
+
+  setIsDisabled(data) {
+    this.isDisabled = data;
   }
 }

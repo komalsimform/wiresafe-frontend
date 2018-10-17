@@ -1,15 +1,13 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="javascript:void(0);" *ngIf="!checkloggedIn">Login</a>
-            <a class="navbar-brand" href="javascript:void(0);" *ngIf="checkloggedIn && !messageheader">Channels</a>
-            <a class="navbar-brand" href="javascript:void(0);" (click)="backtoPage()" *ngIf="messageheader"><img src="assets/images/arrow-back.png" class="backarrowimg"></a>
-            <a class="navbar-brand" href="javascript:void(0);" *ngIf="messageheader && !attachmentheader">{{channelName}}</a>
-            <a class="navbar-brand" href="javascript:void(0);" *ngIf="attachmentheader">Files</a>
-            <a class="navbar-brand logoutbtn" href="javascript:void(0);" *ngIf="checkloggedIn" (click)="logOut()">Logout</a>
-
-            <!-- <a class="navbar-brand attachment" href="javascript:void(0);" *ngIf="messageheader"><img src="assets/images/menu.png" class="attachmentimg"></a> -->
-            <a class="navbar-brand attachment" href="javascript:void(0);" (click)="attachment()" *ngIf="messageheader && !attachmentheader"><img src="assets/images/attachment.png" class="attachmentimg"></a>
+            <a class="navbar-brand" href="javascript:void(0);" *ngIf="!checkLoggedIn">Login</a>
+            <a class="navbar-brand" href="javascript:void(0);" *ngIf="checkLoggedIn && !messageHeader">Channels</a>
+            <a class="navbar-brand" href="javascript:void(0);" (click)="backtoPage()" *ngIf="messageHeader"><img src="assets/images/arrow-back.png" class="backarrowimg"></a>
+            <a class="navbar-brand" href="javascript:void(0);" *ngIf="messageHeader && !attachmentHeader">{{channelName}}</a>
+            <a class="navbar-brand" href="javascript:void(0);" *ngIf="attachmentHeader">Files</a>
+            <a class="navbar-brand logoutbtn" href="javascript:void(0);" *ngIf="checkLoggedIn" (click)="logOut()">Logout</a>
+            <a class="navbar-brand attachment" href="javascript:void(0);" (click)="attachment()" *ngIf="messageHeader && !attachmentHeader"><img src="assets/images/attachment.png" class="attachmentimg"></a>
         </div>
     </div>
 </nav>
